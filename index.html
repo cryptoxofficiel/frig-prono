@@ -1,0 +1,134 @@
+<html lang="fr"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRIGPRONO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000; /* Using Bwin's dark color scheme */
+            color: #ffffff; /* White text for contrast */
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffd700; /* Gold color from Bwin's palette */
+            color: #000;
+            text-align: center;
+            padding: 20px;
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: #ffd700; /* Gold text to match the header */
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #555;
+            color: #fff;
+        }
+        .content {
+            padding: 20px;
+        }
+        .match-container {
+            display: flex;
+            flex-direction: column;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #1a1a1a; /* Slightly lighter black for match container background */
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Subtle gold glow */
+        }
+        .match {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .team {
+            flex: 1;
+            text-align: center;
+        }
+        .prediction {
+            flex: 1;
+            text-align: center;
+            color: #ffd700; /* Gold color for predictions */
+        }
+        .btn {
+            background-color: #ffd700; /* Gold button */
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #e6ac00; /* Darker gold on hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FRIGPRONO</h1>
+        <p>Votre guide ultime pour les pronostics des matchs de la Ligue 1!</p>
+    </header>
+    <nav>
+        <a href="https://example.com">Accueil</a>
+        <a href="https://example.com">Prédictions de Match</a>
+        <a href="https://example.com">Scores en Direct</a>
+        <a href="https://example.com">Actualités</a>
+        <a href="https://example.com">Contact</a>
+    </nav>
+    <div class="content">
+        <h2>Matchs à Venir</h2>
+        <div class="match-container" id="matches">
+            <div class="match">
+                <div class="team">Équipe A</div>
+                <div class="prediction">Prédiction : Victoire</div>
+                <div class="team">Équipe B</div>
+            </div>
+            <!-- D'autres matchs peuvent être ajoutés ici -->
+        </div>
+        <button class="btn" onclick="generatePredictions()">Générer de Nouvelles Prédictions</button>
+    </div>
+
+    <script>
+        function generatePredictions() {
+            const matches = document.getElementById('matches');
+            const teams = ['Équipe A', 'Équipe B', 'Équipe C', 'Équipe D', 'Équipe E', 'Équipe F'];
+            const predictions = ['Victoire', 'Défaite', 'Match nul'];
+
+            matches.innerHTML = '';
+
+            for (let i = 0; i < 5; i++) {
+                const match = document.createElement('div');
+                match.className = 'match';
+
+                const team1 = document.createElement('div');
+                team1.className = 'team';
+                team1.textContent = teams[Math.floor(Math.random() * teams.length)];
+
+                const team2 = document.createElement('div');
+                team2.className = 'team';
+                team2.textContent = teams[Math.floor(Math.random() * teams.length)];
+
+                const prediction = document.createElement('div');
+                prediction.className = 'prediction';
+                prediction.textContent = `Prédiction : ${predictions[Math.floor(Math.random() * predictions.length)]}`;
+
+                match.appendChild(team1);
+                match.appendChild(prediction);
+                match.appendChild(team2);
+
+                matches.appendChild(match);
+            }
+        }
+    </script>
+
+</body></html>
