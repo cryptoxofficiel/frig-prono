@@ -1,103 +1,160 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créateur de Memes</title>
+    <title>Simple Telegram Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px 0;
-        }
-        .meme-container {
-            margin: 20px auto;
-            max-width: 600px;
-        }
-        .meme {
-            position: relative;
-            display: inline-block;
-        }
-        .meme img {
-            max-width: 100%;
-            height: auto;
-        }
-        .meme-text {
-            position: absolute;
+
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 4px #000;
-            pointer-events: none;
+            max-width: 400px;
         }
-        .meme-text.top {
-            top: 10px;
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .meme-text.bottom {
-            bottom: 10px;
+
+        .form-group {
+            margin-bottom: 15px;
         }
-        .controls {
-            margin-top: 20px;
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
         }
-        input[type="text"], input[type="file"] {
-            margin: 10px;
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .success-message {
+            text-align: center;
+            color: green;
+            margin-top: 15px;
+        }
+
+        .error-message {
+            text-align: center;
+            color: red;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Créateur de Memes</h1>
-    </header>
-    <div class="meme-container">
-        <div class="meme">
-            <img id="meme-image" src="https://via.placeholder.com/600x400" alt="Meme">
-            <div id="top-text" class="meme-text top">Texte Haut</div>
-            <div id="bottom-text" class="meme-text bottom">Texte Bas</div>
+    <div class="form-container">
+        <h2>Contact Us</h2>
+        <form id="telegramForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" placeholder="Enter your message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send</button>
+        </form>
+        <div class="success-message" id="successMessage" style="display: none;">
+            Message sent successfully!
+        </div>
+        <div class="error-message" id="errorMessage" style="display: none;">
+            Failed to send the message. Please try again.
         </div>
     </div>
-    <div class="controls">
-        <label for="image-upload">Changer l'image:</label>
-        <input type="file" id="image-upload" accept="image/*">
-        <br>
-        <label for="top-text-input">Texte Haut:</label>
-        <input type="text" id="top-text-input" placeholder="Entrez le texte du haut">
-        <br>
-        <label for="bottom-text-input">Texte Bas:</label>
-        <input type="text" id="bottom-text-input" placeholder="Entrez le texte du bas">
-    </div>
+
     <script>
-        const memeImage = document.getElementById('meme-image');
-        const topText = document.getElementById('top-text');
-        const bottomText = document.getElementById('bottom-text');
-        const imageUpload = document.getElementById('image-upload');
-        const topTextInput = document.getElementById('top-text-input');
-        const bottomTextInput = document.getElementById('bottom-text-input');
+        const form = document.getElementById('telegramForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
 
-        imageUpload.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    memeImage.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+        // Replace with your Telegram Bot Token and Chat ID
+        const BOT_TOKEN = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
+        const CHAT_ID = '7747778364'; // Replace with your chat ID
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            const telegramMessage = `
+🔔 *New Form Submission* 🔔
+👤 *Name:* ${name}
+📧 *Email:* ${email}
+💬 *Message:* ${message}
+            `;
+
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: telegramMessage,
+                        parse_mode: 'Markdown',
+                    }),
+                });
+
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    form.reset();
+                } else {
+                    throw new Error('Failed to send message');
+                }
+            } catch (error) {
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'block';
             }
-        });
-
-        topTextInput.addEventListener('input', () => {
-            topText.textContent = topTextInput.value;
-        });
-
-        bottomTextInput.addEventListener('input', () => {
-            bottomText.textContent = bottomTextInput.value;
         });
     </script>
 </body>
